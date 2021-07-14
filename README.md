@@ -1,6 +1,6 @@
 # Ejercicios Repaso Javascript
 
-Programar el modulo 'moduloEjercicios.js', de manera de completar las dos funciones que se declaran en ese modulo siguiendo las especificaciones que se encuentran en el comentario de cada funcion.
+Programar el modulo 'moduloEjercicios.js', de manera de completar las distintas funciones que se declaran en ese modulo siguiendo las especificaciones que se encuentran en el comentario de cada funcion.
 
 La idea es utilizar las operaciones de control de flujo basicas de js, como son for e if y tambien funciones basicas de arreglos como filter, map, forEach.
 
