@@ -1,4 +1,4 @@
-# ejercicios-Javascript
+# Ejercicios Repaso Javascript
 
 Programar el modulo 'moduloEjercicios.js', de manera de completar las dos funciones que se declaran en ese modulo siguiendo las especificaciones que se encuentran en el comentario de cada funcion.
 
