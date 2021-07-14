@@ -1,0 +1,21 @@
+{
+  "name": "ejerciciosjs",
+  "version": "1.0.0",
+  "description": "Ejercicios Js para repasar",
+  "main": "src/index.js",
+  "type": "module",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node src/index.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/agustinchiarotto/ejercicios-Javascript.git"
+  },
+  "author": "Agustin Chiarotto",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/agustinchiarotto/ejercicios-Javascript/issues"
+  },
+  "homepage": "https://github.com/agustinchiarotto/ejercicios-Javascript#readme"
+}
