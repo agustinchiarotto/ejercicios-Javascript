@@ -7,7 +7,6 @@ import {
     promedioDeCriticaBypeliculaId,
 } from '../src/moduloEjercicios.js';
 
-// materiasAprobadasByNombreAlumno
 console.log('------------------------------------------------------');
 console.log('Ejecutando ejercicios de peliculas.');
 
