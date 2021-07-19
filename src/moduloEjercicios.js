@@ -1,38 +1,60 @@
-import basededatos from './basededatos.js';
-
+import basededatos, { database } from './basededatos.js';
+import * as helper from './helper.js';
 
 /**
-* Devuelve el promedio de anios de estreno de todas las peliculas de la base de datos.
-*/
+ * Devuelve el promedio de anios de estreno de todas las peliculas de la base de datos.
+ */
 export const promedioAnioEstreno = () => {
-    // Ejemplo de como accedo a datos dentro de la base de datos
-    // console.log(basededatos.peliculas);
-    return [];
+  let anios = [];
+  basededatos.peliculas.map((peli) => (anios = [...anios, peli.anio]));
+  return helper.promedioDeLista(anios);
 };
 
 /**
-* Devuelve la lista de peliculas con promedio de critica mayor al numero que llega
-* por parametro.
-* @param {number} promedio
-  */
+ * Devuelve la lista de peliculas con promedio de critica mayor al numero que llega
+ * por parametro.
+ * @param {number} promedio
+ */
 export const pelicuasConCriticaPromedioMayorA = (promedio) => {
-    return [];
+  let result = [];
+  basededatos.peliculas.map((pelicula) => {
+    let promedioReal = promedioDeCriticaBypeliculaId(pelicula.id);
+
+    if (promedioReal > promedio) {
+      pelicula = { ...pelicula, puntaje_promedio: promedioReal };
+      result = [...result, pelicula];
+    }
+  });
+
+  return result;
 };
 
 /**
-* Devuelve la lista de peliculas de un director
-* @param {string} nombreDirector
-*/
+ * Devuelve la lista de peliculas de un director
+ * @param {string} nombreDirector
+ */
 export const peliculasDeUnDirector = (nombreDirector) => {
-    return [];
+  let idDirector = database.directores.find(
+    (director) => director.nombre === nombreDirector
+  ).id;
+  return database.peliculas.filter((pelicula) => {
+    if (pelicula.directores.find((director) => director === idDirector) > 0) {
+      return pelicula;
+    }
+  });
 };
 
-/**
-* Devuelve el promdedio de critica segun el id de la pelicula.
-* @param {number} peliculaId
-*/
+/** Devuelve el promedio de critica segun el id de la pelicula.
+ * @param {number} peliculaId
+ */
 export const promedioDeCriticaBypeliculaId = (peliculaId) => {
-    return [];
+  let result = [];
+  database.calificaciones.map((calificacion) => {
+    if (calificacion.pelicula === peliculaId) {
+      result = [...result, calificacion.puntuacion];
+    }
+  });
+  return helper.promedioDeLista(result);
 };
 
 /**
@@ -68,9 +90,19 @@ export const promedioDeCriticaBypeliculaId = (peliculaId) => {
     ],
  */
 export const obtenerPeliculasConPuntuacionExcelente = () => {
-    // Ejemplo de como accedo a datos dentro de la base de datos
-    // console.log(basededatos.peliculas);
-    return [];
+  // Ejemplo de como accedo a datos dentro de la base de datos
+  // console.log(basededatos.peliculas);
+  let result = [];
+  database.calificaciones.filter((calificacion) => {
+    if (calificacion.puntuacion >= 9) {
+      database.peliculas.find((pelicula) => {
+        if (pelicula.id === calificacion.pelicula) {
+          result = [...result, pelicula];
+        }
+      });
+    }
+  });
+  return result;
 };
 
 /**
@@ -121,5 +153,39 @@ export const obtenerPeliculasConPuntuacionExcelente = () => {
  * @param {string} nombrePelicula
  */
 export const expandirInformacionPelicula = (nombrePelicula) => {
-    return {};
+  // return {};
+  let peli = database.peliculas.find(
+    (pelicula) => pelicula.nombre === nombrePelicula
+  );
+  let directores = peli.directores.map((director) =>
+    database.directores.find((dire) => dire.id === director)
+  );
+  let generos = peli.generos.map((genero) =>
+    database.generos.find((gen) => gen.id === genero)
+  );
+  let criticas = database.calificaciones.filter(
+    (calif) => calif.pelicula === peli.id
+  );
+
+  criticas.map(
+    (critica) =>
+      (critica.critico = database.criticos.find((c) => {
+        if (c.id === critica.critico) {
+          c.pais = database.paises.find((p) => p.id === c.pais)?.nombre;
+          return c;
+        }
+      }))
+  );
+
+  return {
+    ...peli,
+    directores: directores,
+    generos: generos,
+    criticas: criticas.map((critica) => {
+      return {
+        critico: JSON.stringify(critica.critico),
+        puntuacion: critica.puntuacion,
+      };
+    }),
+  };
 };
